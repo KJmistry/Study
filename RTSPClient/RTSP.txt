@@ -1,0 +1,44 @@
+Basic flow for streaming (ffplay)- OPTIONS > DESCRIBE > SETUP > SETUP > PLAY > TEARDOWN
+
+SDP (Sesstion Description Protocol) - Describe multimedia communication session in network
+
+Concept of Interleaving - Used in case of RTSP over TCP (Use same TCP connection for both RTP & RTCP)
+RTSP - Establish connection & control media stream
+
+TODO: RTSP, RTP, RTCP brief
+RTP - Carries actual media stream (audio/video)
+RTCP - Works in parallel with RTP to provide feedback on the stream’s quality
+
+- After SETUP command RTP & RTCP packets are exchanged over network
+
+
+RTSP (Real-Time Streaming Protocol):
+
+Used for streaming media (e.g., surveillance cameras, IPTV).
+Supports transport over TCP or UDP.
+Typically used in live streaming or on-demand media delivery.
+
+
+Transport Options in RTSP:
+
+TCP: Reliable transport, slower but more stable (commonly used for RTSP).
+UDP: Faster but less reliable (often used for time-sensitive applications like live video).
+HTTP: Used for RTSP-over-HTTP transport (may be used in firewalled or restricted environments).
+Protocols in YouTube Streaming:
+
+
+Other Streaming Protocols:
+
+DASH (Dynamic Adaptive Streaming over HTTP): Predominantly used by YouTube on desktops; adaptive bitrate streaming over HTTP.
+HLS (HTTP Live Streaming): Used by YouTube on mobile devices (especially iOS); adaptive bitrate streaming over HTTP.
+RTMP (Real-Time Messaging Protocol): Legacy protocol, previously used by YouTube for live streaming, now mostly replaced by HTTP-based protocols like HLS and DASH.
+
+DASH and HLS are the main protocols for video delivery on YouTube.
+RTMP was historically used for live streaming but is now largely replaced.
+SDL2 and FFmpeg:
+
+SDL2: Used for rendering video frames in FFmpeg-based applications.
+FFmpeg: Essential for decoding and playing video from various protocols (RTSP, HLS, DASH, etc.).
+Current Trends:
+
+HTTP-based streaming protocols like HLS and DASH are now more widely used due to compatibility, adaptive bitrate, and resilience compared to older protocols like RTMP.

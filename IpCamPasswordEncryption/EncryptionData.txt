@@ -1,0 +1,29 @@
+
+key = 1b94b6c39f4ef847dba4ec89dbedb06a70acb7ed28944ef74bdade08db8731cd
+iv = b272afe641e7903931be95f295ff1d49
+
+stringToEncrypt = "kshitij"
+
+encryptedPassword = QfMclJRJtjsfbPyTSluKwbIBC3hBnII=
+
+                    QfMclJRJtg==
+
+****************************************************************************************************
+
+key = bdd8a0fedbcb77f50188c9fc20b5a6674baf032007988dfa80b3270003c5d4ed
+iv = 97ef12ba259ff1a2aba8113ace9b3e49
+
+stringToEncrypt = "kshitij"
+
+encryptedPassword = KYDUsWNhHENlLuAQIBOTLZM2sIWjcGM=
+                    KYDUsWNhHENlLuAQIBOTLZM2sIWjcGM=
+
+                    KYDUsWNhHA==
+
+
+
+
+
+
+
+

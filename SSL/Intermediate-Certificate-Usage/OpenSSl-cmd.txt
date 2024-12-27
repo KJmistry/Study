@@ -1,0 +1,38 @@
+********** Generate Root Certificate **********
+
+# Generate private key for root (2048-bit RSA)
+openssl genpkey -algorithm RSA -out root.key -pkeyopt rsa_keygen_bits:2048
+
+# Generate the self-signed root certificate (valid for 10 years)
+openssl req -key root.key -new -x509 -out root.crt -days 3650
+
+
+
+********** Generate Intermediate Certificate **********
+
+# Generate private key for the intermediate certificate (2048-bit RSA)
+openssl genpkey -algorithm RSA -out intermediate.key -pkeyopt rsa_keygen_bits:2048
+
+# Generate a CSR (Certificate Signing Request) for the intermediate certificate
+openssl req -key intermediate.key -new -out intermediate.csr
+
+# Sign the intermediate certificate using the root certificate
+openssl x509 -req -in intermediate.csr -CA root.crt -CAkey root.key -CAcreateserial -out intermediate.crt -days 3650
+
+
+
+********** Generate Server Certificate **********
+
+# Generate private key for the server certificate (2048-bit RSA)
+openssl genpkey -algorithm RSA -out server.key -pkeyopt rsa_keygen_bits:2048
+
+# Generate a CSR (Certificate Signing Request) for the server certificate
+openssl req -key server.key -new -out server.csr
+
+# Sign the server certificate using the intermediate certificate
+openssl x509 -req -in server.csr -CA intermediate.crt -CAkey intermediate.key -CAcreateserial -out server.crt -days 3650
+
+
+********** Use Below Command to test the server **********
+
+openssl s_client -connect localhost:4433 -CAfile root.crt

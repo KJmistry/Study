@@ -1,0 +1,26 @@
+#### GENERATING PKCS#12 FILE ####
+
+openssl pkcs12 -export -out certificate.p12 -inkey server.key -in server.crt
+
+// One can add intermediate certificate using -certfile option
+
+#### VIEW CONTENT OF PKCS#12 FILE ####
+
+openssl pkcs12 -info -in certificate.p12 -nodes
+
+#### EXTRACT PRIVATE KEY FROM PKCS#12 FILE ####
+
+openssl pkcs12 -in certificate.p12 -nocerts -out extracted_key.pem
+
+// After entering import password it will further ask for PEM pass phrase which will be used as new password to secure private key file
+// To decrypt password protected private key use below command
+
+openssl rsa -in secure_privatekey.key -out decrypted_privatekey.key
+
+// To skip protecting private key at the time of extraction
+
+openssl pkcs12 -in certificate.p12 -nocerts -out extracted_privatekey_unsecure.pem -nodes
+
+#### EXTRACT CERTIFICATE FROM PKCS#12 FILE ####
+
+openssl pkcs12 -in certificate.p12 -nokeys -out extracted_certificate.pem
