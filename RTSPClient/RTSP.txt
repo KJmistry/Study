@@ -23,7 +23,8 @@ Transport Options in RTSP:
 
 TCP: Reliable transport, slower but more stable (commonly used for RTSP).
 UDP: Faster but less reliable (often used for time-sensitive applications like live video).
-HTTP: Used for RTSP-over-HTTP transport (may be used in firewalled or restricted environments).
+HTTP: Used for RTSP-over-HTTP transport (may be used in firewalled or restricted environments).  // Used to avoid additional port forwarding 554 port, standard http port is used for both http & RTSP
+
 Protocols in YouTube Streaming:
 
 
