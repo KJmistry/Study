@@ -16,106 +16,99 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    const char *ip_address = argv[1];      // IP address (e.g., 192.168.101.47)
-    const char *transport_type = argv[2];  // Transport type (tcp, udp, http)
-    const char *stream_path = argv[3];     // Stream path (e.g., /unicaststream/2)
+    const char *ipAddress = argv[1];      // IP address (e.g., 192.168.101.47)
+    const char *transportType = argv[2];  // Transport type (tcp, udp, http)
+    const char *streamPath = argv[3];     // Stream path (e.g., /unicaststream/2)
 
-    // Construct RTSP URL dynamically
-    char rtsp_url[256];
-    snprintf(rtsp_url, sizeof(rtsp_url), "rtsp://admin:admin@%s%s", ip_address, stream_path);
+    /* Construct RTSP URL dynamically */
+    char rtspUrl[256];
+    snprintf(rtspUrl, sizeof(rtspUrl), "rtsp://admin:admin@%s%s", ipAddress, streamPath);
 
-    // Print the URL and transport type for debugging
-    printf("RTSP URL: %s\n", rtsp_url);
-    printf("Transport Type: %s\n", transport_type);
+    /* Print the URL and transport type for debugging */
+    printf("RTSP URL: %s\n", rtspUrl);
+    printf("Transport Type: %s\n", transportType);
 
-    AVFormatContext *fmt_ctx = NULL;
-    AVCodecContext  *dec_ctx = NULL;
+    AVFormatContext *fmtCtx = NULL;
+    AVCodecContext  *decCtx = NULL;
     AVCodec         *dec = NULL;
-    AVPacket         pkt;
-    int              video_stream_index = -1;
+    int              videoStreamIndex = -1;
     int              ret;
     AVDictionary    *options = NULL;
 
-    // Set the RTSP transport protocol (TCP, UDP, or HTTP) dynamically based on command-line argument
-    av_dict_set(&options, "rtsp_transport", transport_type, 0);
+    /* Set the RTSP transport protocol (TCP, UDP, or HTTP) dynamically based on command-line argument */
+    av_dict_set(&options, "rtsp_transport", transportType, 0);
 
-    // Initialize libavformat and register all codecs
-    av_register_all();
+    /* Initialize libavformat and register all codecs */
     avformat_network_init();
 
-    // Open the input RTSP stream
-    if ((ret = avformat_open_input(&fmt_ctx, rtsp_url, NULL, &options)) < 0)
+    /* Open the input RTSP stream */
+    if ((ret = avformat_open_input(&fmtCtx, rtspUrl, NULL, &options)) < 0)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to open input stream: %s\n", av_err2str(ret));
         return -1;
     }
 
-    // Retrieve stream information
-    if ((ret = avformat_find_stream_info(fmt_ctx, NULL)) < 0)
+    /* Retrieve stream information */
+    if ((ret = avformat_find_stream_info(fmtCtx, NULL)) < 0)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to retrieve stream information: %s\n", av_err2str(ret));
         return -1;
     }
 
-    // Find the first video stream
-    for (int i = 0; i < fmt_ctx->nb_streams; i++)
+    /* Find the first video stream */
+    for (int i = 0; i < fmtCtx->nb_streams; i++)
     {
-        if (fmt_ctx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
+        if (fmtCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
         {
-            video_stream_index = i;
+            videoStreamIndex = i;
             break;
         }
     }
 
-    if (video_stream_index == -1)
+    if (videoStreamIndex == -1)
     {
         av_log(NULL, AV_LOG_ERROR, "Could not find a video stream\n");
         return -1;
     }
 
-    // Find the decoder for the video stream
-    dec = avcodec_find_decoder(fmt_ctx->streams[video_stream_index]->codecpar->codec_id);
+    /* Find the decoder for the video stream */
+    dec = avcodec_find_decoder(fmtCtx->streams[videoStreamIndex]->codecpar->codec_id);
     if (!dec)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to find video decoder\n");
         return -1;
     }
 
-    // Create a codec context for the decoder
-    dec_ctx = avcodec_alloc_context3(dec);
-    if (!dec_ctx)
+    /* Create a codec context for the decoder */
+    decCtx = avcodec_alloc_context3(dec);
+    if (!decCtx)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to allocate codec context\n");
         return -1;
     }
 
-    // Initialize the codec context with the stream parameters
-    if ((ret = avcodec_parameters_to_context(dec_ctx, fmt_ctx->streams[video_stream_index]->codecpar)) < 0)
+    /* Initialize the codec context with the stream parameters */
+    if ((ret = avcodec_parameters_to_context(decCtx, fmtCtx->streams[videoStreamIndex]->codecpar)) < 0)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to copy codec parameters to codec context: %s\n", av_err2str(ret));
         return -1;
     }
 
-    // Open the decoder
-    if ((ret = avcodec_open2(dec_ctx, dec, NULL)) < 0)
+    /* Open the decoder */
+    if ((ret = avcodec_open2(decCtx, dec, NULL)) < 0)
     {
         av_log(NULL, AV_LOG_ERROR, "Failed to open codec: %s\n", av_err2str(ret));
         return -1;
     }
 
-    // Initialize packet
-    av_init_packet(&pkt);
-    pkt.data = NULL;
-    pkt.size = 0;
-
-    // Initialize SDL2 for rendering
+    /* Initialize SDL2 for rendering */
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         av_log(NULL, AV_LOG_ERROR, "SDL2 initialization failed: %s\n", SDL_GetError());
         return -1;
     }
 
-    // Create SDL window
+    /* Create SDL window */
     SDL_Window *window = SDL_CreateWindow("Video Player", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
     if (!window)
     {
@@ -123,7 +116,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    // Create SDL renderer
+    /* Create SDL renderer */
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer)
     {
@@ -131,59 +124,63 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    // Create SDL texture for rendering frames
-    SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_STREAMING, dec_ctx->width, dec_ctx->height);
+    /* Create SDL texture for rendering frames */
+    SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_STREAMING, decCtx->width, decCtx->height);
     if (!texture)
     {
         av_log(NULL, AV_LOG_ERROR, "SDL2 texture creation failed: %s\n", SDL_GetError());
         return -1;
     }
 
-    // SDL event handling loop
+    /* SDL event handling loop */
     SDL_Event event;
     int       quit = 0;
+    AVPacket  avPacket = {0};
+    AVFrame  *frame;
 
-    // Main loop to read frames and display them
+    /* Main loop to read frames and display them */
     while (!quit)
     {
-        // Process events
+        /* Process events */
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
             {
-                quit = 1;  // Exit the loop when the close button is pressed
+                /* Exit the loop when the close button is pressed */
+                quit = 1;
             }
         }
 
-        // Read a frame from the RTSP stream
-        ret = av_read_frame(fmt_ctx, &pkt);
+        /* Read a frame from the RTSP stream */
+        ret = av_read_frame(fmtCtx, &avPacket);
         if (ret < 0)
         {
-            break;  // End of stream or error
+            /* End of stream or error */
+            break;
         }
 
-        // Check if the packet is from the video stream
-        if (pkt.stream_index == video_stream_index)
+        /* Check if the packet is from the video stream */
+        if (avPacket.stream_index == videoStreamIndex)
         {
-            // Send the packet to the decoder
-            ret = avcodec_send_packet(dec_ctx, &pkt);
+            /* Send the packet to the decoder */
+            ret = avcodec_send_packet(decCtx, &avPacket);
             if (ret < 0)
             {
                 av_log(NULL, AV_LOG_ERROR, "Error sending packet to decoder: %s\n", av_err2str(ret));
                 break;
             }
 
-            // Receive a decoded frame
-            AVFrame *frame = av_frame_alloc();
+            /* Receive a decoded frame */
+            frame = av_frame_alloc();
             if (!frame)
             {
                 av_log(NULL, AV_LOG_ERROR, "Failed to allocate frame\n");
                 break;
             }
-            ret = avcodec_receive_frame(dec_ctx, frame);
+            ret = avcodec_receive_frame(decCtx, frame);
             if (ret >= 0)
             {
-                // Successfully received a frame; render it using SDL2
+                /* Successfully received a frame; render it using SDL2 */
                 SDL_UpdateYUVTexture(texture, NULL, frame->data[0], frame->linesize[0], frame->data[1], frame->linesize[1], frame->data[2],
                                      frame->linesize[2]);
                 SDL_RenderClear(renderer);
@@ -193,7 +190,7 @@ int main(int argc, char *argv[])
             }
             else if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
             {
-                // No frame could be decoded, continue reading
+                /* No frame could be decoded, continue reading */
                 av_frame_free(&frame);
                 continue;
             }
@@ -205,17 +202,17 @@ int main(int argc, char *argv[])
             av_frame_free(&frame);
         }
 
-        // Free the packet and continue
-        av_packet_unref(&pkt);
+        /* Free the packet and continue */
+        av_packet_unref(&avPacket);
     }
 
-    // Clean up
+    /* Clean up */
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    avcodec_free_context(&dec_ctx);
-    avformat_close_input(&fmt_ctx);
+    avcodec_free_context(&decCtx);
+    avformat_close_input(&fmtCtx);
 
     return 0;
 }
