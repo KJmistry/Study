@@ -1,0 +1,1 @@
+savedcmd_/home/kshitijmistry/Desktop/Study/LinuxDevDriver/myModule.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/kshitijmistry/Desktop/Study/LinuxDevDriver/myModule.ko /home/kshitijmistry/Desktop/Study/LinuxDevDriver/myModule.o /home/kshitijmistry/Desktop/Study/LinuxDevDriver/myModule.mod.o
