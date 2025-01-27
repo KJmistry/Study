@@ -94,3 +94,12 @@ If everything was done correctly, your module should now be successfully inserte
 By following these steps, you have successfully written, compiled, signed, and inserted a Linux kernel module while ensuring compatibility with Secure Boot. This guide helps overcome the "Key was rejected by service" error using MOK (Machine Owner Key) enrollment.
 
 Happy kernel hacking! 🚀
+
+## Possible Enhancements:
+
+**Add Parameters** – Allow users to pass arguments when loading the module.
+**Proc File Interface** – Create a /proc entry to interact with the module from userspace.
+**Sysfs Interface** – Expose parameters through the /sys filesystem.
+**Work Queues & Timers** – Schedule periodic tasks inside the kernel.
+**Interrupt Handling** – Work with hardware interrupts.
+**Device File (/dev) Support** – Allow user applications to communicate via ioctl or read/write.
