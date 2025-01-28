@@ -6,3 +6,18 @@
 
 # Binary files
 *.bin
+
+# Ignore common build artifacts
+*.o
+*.ko
+*.mod.c
+*.cmd
+*.symvers
+*.order
+*.dwo
+*.d
+*.mod
+*.mod.o
+*.mod.cmd
+modules.order
+Module.symvers
