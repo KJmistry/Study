@@ -1,1 +1,0 @@
-savedcmd_/home/kshitijmistry/Desktop/Study/LinuxDevDriver/kernelModule_procfs/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/kshitijmistry/Desktop/Study/LinuxDevDriver/kernelModule_procfs/Module.symvers -T /home/kshitijmistry/Desktop/Study/LinuxDevDriver/kernelModule_procfs/modules.order -i Module.symvers -e 
