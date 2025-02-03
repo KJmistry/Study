@@ -76,6 +76,11 @@ mokutil --list-enrolled
 
 ---
 
+### **Sign modue with custom key**
+```sh
+/usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 ../../Security/MOK.priv ../../Security/MOK.pem myModule.ko 
+```
+
 ## Final Step: Insert the Module Again
 ```sh
 sudo insmod myModule.ko
