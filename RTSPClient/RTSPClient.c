@@ -1,3 +1,21 @@
+/*
+ * RTSP Client for Streaming Video
+ *
+ * Author: Kshitij Mistry
+ *
+ * This program is an RTSP client that receives and decodes an RTSP stream using FFmpeg
+ * and displays it using SDL2. It supports different transport protocols (TCP, UDP, HTTP).
+ *
+ * Libraries Used:
+ * - SDL2: Used for rendering video frames.
+ * - FFmpeg (libavformat, libavcodec, libavutil): Used for handling and decoding the RTSP stream.
+ *
+ * Usage:
+ *   ./rtsp_client <ip_address> <transport_type> <stream_path>
+ *   Example: ./rtsp_client 192.168.101.47 tcp /unicaststream/2
+ *
+ */
+
 #include <SDL2/SDL.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -22,7 +40,28 @@ int main(int argc, char *argv[])
 
     /* Construct RTSP URL dynamically */
     char rtspUrl[256];
-    snprintf(rtspUrl, sizeof(rtspUrl), "rtsp://admin:admin@%s%s", ipAddress, streamPath);
+    char username[50] = {0};
+    char password[50] = {0};
+
+    /* Get Username */
+    printf("Enter username (Press Enter to skip authentication): ");
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = 0;  // Remove trailing newline
+
+    /* Get Password */
+    printf("Enter password (Press Enter to skip authentication): ");
+    fgets(password, sizeof(password), stdin);
+    password[strcspn(password, "\n")] = 0;  // Remove trailing newline
+
+    /* Construct RTSP URL dynamically */
+    if (strlen(username) > 0 && strlen(password) > 0)
+    {
+        snprintf(rtspUrl, sizeof(rtspUrl), "rtsp://%s:%s@%s%s", username, password, ipAddress, streamPath);
+    }
+    else
+    {
+        snprintf(rtspUrl, sizeof(rtspUrl), "rtsp://%s%s", ipAddress, streamPath);
+    }
 
     /* Print the URL and transport type for debugging */
     printf("RTSP URL: %s\n", rtspUrl);

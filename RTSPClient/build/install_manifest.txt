@@ -1,0 +1,2 @@
+/home/kshitijmistry/Desktop/Study/RTSPClient/install/bin/RTSPClient.bin
+/home/kshitijmistry/Desktop/Study/RTSPClient/install/share/README.md
