@@ -4,6 +4,9 @@
 # Ignore build directory
 /build/
 
+# Ignore install directory
+/install/
+
 # Log files
 *.log
 
