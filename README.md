@@ -8,7 +8,8 @@ This repository contains various study materials and test code prepared as part 
 - Streaming protocols  
 - C fundamentals  
 - Other related concepts  
-
+- Linux Internals
+  
 ---
 
 📌 A collection of notes, experiments, and test code for learning and reference.  
