@@ -1,11 +1,16 @@
 # VS Code
 .vscode/
 
+# Ignore build directory
+/build/
+
 # Log files
 *.log
 
 # Binary files
 *.bin
+*.out
+*.exe
 
 # Ignore common build artifacts
 *.o
@@ -21,3 +26,11 @@
 *.mod.cmd
 modules.order
 Module.symvers
+*.so
+*.a
+
+# Ignore CMake generated files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
