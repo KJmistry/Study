@@ -29,6 +29,7 @@
 *.mod.cmd
 modules.order
 Module.symvers
+install_manifest.txt
 *.so
 *.a
 
