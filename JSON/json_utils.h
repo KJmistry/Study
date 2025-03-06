@@ -1,6 +1,6 @@
 /**
- * @file json_utils.h
- * @brief JSON wrapper library using Jansson.
+ * @file    json_utils.h
+ * @brief   JSON wrapper library using Jansson.
  *
  * This library provides an easy-to-use API for working with JSON data
  * using the Jansson library.
@@ -17,6 +17,8 @@
 /** Failure return code */
 #define JSON_ERROR   1
 
+typedef json_t JSON_OBJ;
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -27,9 +29,9 @@ extern "C"
      * @brief Load JSON data from a file.
      * @param[in] filename Path to the JSON file.
      * @param[out] root Pointer to store the loaded JSON object.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_load_from_file(const char *filename, json_t **root);
+    int json_load_from_file(const char *filename, JSON_OBJ **root);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -37,9 +39,9 @@ extern "C"
      * @param[in] root JSON object.
      * @param[in] tag Key name.
      * @param[out] obj Pointer to store the retrieved object.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_object(json_t *root, const char *tag, json_t **obj);
+    int json_get_object(JSON_OBJ *root, const char *tag, JSON_OBJ **obj);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -47,9 +49,9 @@ extern "C"
      * @param[in] obj JSON object.
      * @param[in] tag Key name.
      * @param[out] val Pointer to store the retrieved integer.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_integer(json_t *obj, const char *tag, int *val);
+    int json_get_integer(JSON_OBJ *obj, const char *tag, int *val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -57,9 +59,9 @@ extern "C"
      * @param[in] obj JSON object.
      * @param[in] tag Key name.
      * @param[out] val Pointer to store the retrieved boolean.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_boolean(json_t *obj, const char *tag, int *val);
+    int json_get_boolean(JSON_OBJ *obj, const char *tag, int *val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -67,9 +69,9 @@ extern "C"
      * @param[in] obj JSON object.
      * @param[in] tag Key name.
      * @param[out] val Pointer to store the retrieved string.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_string(json_t *obj, const char *tag, const char **val);
+    int json_get_string(JSON_OBJ *obj, const char *tag, const char **val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -77,9 +79,9 @@ extern "C"
      * @param[in] obj JSON object.
      * @param[in] tag Key name.
      * @param[out] array Pointer to store the retrieved array.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_array(json_t *obj, const char *tag, json_t **array);
+    int json_get_array(JSON_OBJ *obj, const char *tag, JSON_OBJ **array);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -89,7 +91,7 @@ extern "C"
      * @param[out] val Pointer to store the retrieved integer.
      * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_integer_from_array(json_t *array, size_t index, int *val);
+    int json_get_integer_from_array(JSON_OBJ *array, size_t index, int *val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -99,7 +101,7 @@ extern "C"
      * @param[out] val Pointer to store the retrieved string.
      * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_string_from_array(json_t *array, size_t index, const char **val);
+    int json_get_string_from_array(JSON_OBJ *array, size_t index, const char **val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -109,7 +111,7 @@ extern "C"
      * @param[out] val Pointer to store the retrieved boolean (1 for true, 0 for false).
      * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_boolean_from_array(json_t *array, size_t index, int *val);
+    int json_get_boolean_from_array(JSON_OBJ *array, size_t index, int *val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -119,7 +121,7 @@ extern "C"
      * @param[out] obj Pointer to store the retrieved object.
      * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_get_object_from_array(json_t *array, size_t index, json_t **obj);
+    int json_get_object_from_array(JSON_OBJ *array, size_t index, JSON_OBJ **obj);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -127,9 +129,9 @@ extern "C"
      * @param[in,out] obj JSON object.
      * @param[in] tag Key name.
      * @param[in] val Integer value to set.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_set_integer(json_t *obj, const char *tag, int val);
+    int json_set_integer(JSON_OBJ *obj, const char *tag, int val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -137,9 +139,9 @@ extern "C"
      * @param[in,out] obj JSON object.
      * @param[in] tag Key name.
      * @param[in] val Boolean value to set.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_set_boolean(json_t *obj, const char *tag, int val);
+    int json_set_boolean(JSON_OBJ *obj, const char *tag, int val);
 
     //-------------------------------------------------------------------------------------------------
     /**
@@ -147,32 +149,32 @@ extern "C"
      * @param[in,out] obj JSON object.
      * @param[in] tag Key name.
      * @param[in] val String value to set.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_set_string(json_t *obj, const char *tag, const char *val);
+    int json_set_string(JSON_OBJ *obj, const char *tag, const char *val);
 
     //-------------------------------------------------------------------------------------------------
     /**
      * @brief Create a new JSON object.
      * @return Pointer to a new JSON object.
      */
-    json_t *json_create_object(void);
+    JSON_OBJ *json_create_object(void);
 
     //-------------------------------------------------------------------------------------------------
     /**
      * @brief Save JSON data to a file.
      * @param[in] root JSON object.
      * @param[in] filename Path to the file.
-     * @return SUCCESS on success, FAIL on failure.
+     * @return JSON_SUCCESS on success, JSON_ERROR on failure.
      */
-    int json_save_to_file(json_t *root, const char *filename);
+    int json_save_to_file(JSON_OBJ *root, const char *filename);
 
     //-------------------------------------------------------------------------------------------------
     /**
      * @brief Free a JSON object.
      * @param[in] obj JSON object to free.
      */
-    void json_free(json_t *obj);
+    void json_free(JSON_OBJ *obj);
 
 #ifdef __cplusplus
 }
