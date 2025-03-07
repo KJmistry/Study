@@ -11,6 +11,7 @@
 #define JSON_UTILS_H
 
 #include <jansson.h>
+#include <stdio.h>
 
 /** Success return code */
 #define JSON_SUCCESS 0
